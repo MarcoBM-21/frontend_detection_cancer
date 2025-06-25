@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { User, Camera, Upload, ArrowRight, MapPin } from 'lucide-react';
 import { UserData } from '../types';
+import {predictSkinAnalysis} from "../utils/api.ts";
 
 interface UserDataFormProps {
   onSubmit: (data: UserData) => void;
@@ -28,10 +29,40 @@ export default function UserDataForm({ onSubmit }: UserDataFormProps) {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.firstName && formData.lastName && formData.age > 0 && formData.lesionArea) {
-      onSubmit(formData);
+    if (!formData.firstName || !formData.lastName || formData.age <= 0 || !formData.lesionArea || !formData.image) return;
+
+    try {
+      // Convertir base64 a archivo tipo File
+      const base64 = formData.image.split(',')[1];
+      const byteString = atob(base64);
+      const arrayBuffer = new ArrayBuffer(byteString.length);
+      const intArray = new Uint8Array(arrayBuffer);
+      for (let i = 0; i < byteString.length; i++) {
+        intArray[i] = byteString.charCodeAt(i);
+      }
+      const blob = new Blob([intArray], { type: 'image/png' });
+      const file = new File([blob], 'lesion.png', { type: 'image/png' });
+
+      // Crear FormData
+      const data = new FormData();
+      data.append('file', file);
+      data.append('firstName', formData.firstName);
+      data.append('lastName', formData.lastName);
+      data.append('age', formData.age.toString());
+      data.append('gender', formData.gender);
+      data.append('lesionArea', formData.lesionArea);
+
+      // Enviar al backend
+      const result = await predictSkinAnalysis(data);
+
+      // Combinar resultado con datos originales (opcional)
+      onSubmit({ ...formData, ...result });
+
+    } catch (error) {
+      alert("Ocurrió un error al enviar los datos.");
+      console.error(error);
     }
   };
 
