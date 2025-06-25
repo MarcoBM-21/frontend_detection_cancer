@@ -53,7 +53,7 @@ export default function ResultsScreen({ userData, analysis, onRestart }: Results
     switch (diagnosis) {
       case 'mel': return 'text-red-700 bg-red-50 border-red-200';
       case 'bcc': case 'akiec': return 'text-orange-700 bg-orange-50 border-orange-200';
-      case 'nv': case 'bkl': case 'vasc': case 'df': return 'text-green-700 bg-green-50 border-green-200';
+      case 'nv': case 'bkl': return 'text-green-700 bg-green-50 border-green-200';
       default: return 'text-blue-700 bg-blue-50 border-blue-200';
     }
   };

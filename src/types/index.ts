@@ -8,7 +8,7 @@ export interface UserData {
 }
 
 export interface SkinAnalysisResult {
-  diagnosis: 'nv' | 'mel' | 'bkl' | 'bcc' | 'akiec' | 'vasc' | 'df';
+  diagnosis: 'nv' | 'mel' | 'bkl' | 'bcc' | 'akiec';
   confidence: number;
   findings: string;
   recommendations: string[];
