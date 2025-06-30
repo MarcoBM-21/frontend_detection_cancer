@@ -1,6 +1,4 @@
-import { UserData, SkinAnalysisResult } from '../types';
-
-const diagnosisInfo = {
+export const diagnosisInfo = {
   'nv': {
     name: 'Nevus Melanocítico',
     description: 'Lesión pigmentada benigna común, también conocida como lunar.',
@@ -135,65 +133,65 @@ const diagnosisInfo = {
   }
 };
 
-export function generateSkinAnalysis(userData: UserData): SkinAnalysisResult {
-  // Simulate AI diagnosis selection (in real implementation, this would be ML model output)
-  const diagnoses: Array<keyof typeof diagnosisInfo> = ['nv', 'mel', 'bkl', 'bcc', 'akiec', 'vasc', 'df'];
-  
-  // Weight probabilities based on common occurrence
-  const weights = {
-    'nv': 0.35,    // Most common
-    'bkl': 0.25,   // Common in older adults
-    'bcc': 0.15,   // Common skin cancer
-    'df': 0.10,    // Moderately common
-    'vasc': 0.08,  // Less common
-    'akiec': 0.05, // Precancerous
-    'mel': 0.02    // Least common but most serious
-  };
+// export function generateSkinAnalysis(userData: UserData): SkinAnalysisResult {
+//   // Simulate AI diagnosis selection (in real implementation, this would be ML model output)
+//   const diagnoses: Array<keyof typeof diagnosisInfo> = ['nv', 'mel', 'bkl', 'bcc', 'akiec'];
 
-  // Simulate weighted random selection
-  const random = Math.random();
-  let cumulative = 0;
-  let selectedDiagnosis: keyof typeof diagnosisInfo = 'nv';
+//   // Weight probabilities based on common occurrence
+//   const weights = {
+//     'nv': 0.35,    // Most common
+//     'bkl': 0.25,   // Common in older adults
+//     'bcc': 0.15,   // Common skin cancer
+//     'df': 0.10,    // Moderately common
+//     'vasc': 0.08,  // Less common
+//     'akiec': 0.05, // Precancerous
+//     'mel': 0.02    // Least common but most serious
+//   };
 
-  for (const [diagnosis, weight] of Object.entries(weights)) {
-    cumulative += weight;
-    if (random <= cumulative) {
-      selectedDiagnosis = diagnosis as keyof typeof diagnosisInfo;
-      break;
-    }
-  }
+//   // Simulate weighted random selection
+//   const random = Math.random();
+//   let cumulative = 0;
+//   let selectedDiagnosis: keyof typeof diagnosisInfo = 'nv';
 
-  const diagInfo = diagnosisInfo[selectedDiagnosis];
-  
-  // Calculate confidence based on diagnosis type and image availability
-  let confidence = 75;
-  
-  // Adjust confidence based on diagnosis complexity
-  if (selectedDiagnosis === 'mel') confidence = 85; // High confidence for melanoma detection
-  if (selectedDiagnosis === 'nv') confidence = 90;  // High confidence for common nevi
-  if (selectedDiagnosis === 'bkl') confidence = 88; // High confidence for seborrheic keratosis
-  if (selectedDiagnosis === 'bcc') confidence = 82; // Good confidence for BCC
-  if (selectedDiagnosis === 'akiec') confidence = 78; // Moderate confidence for precancerous
-  if (selectedDiagnosis === 'vasc') confidence = 85; // Good confidence for vascular
-  if (selectedDiagnosis === 'df') confidence = 87;  // Good confidence for dermatofibroma
-  
-  // Boost confidence if image is provided
-  if (userData.image) {
-    confidence += 8;
-  }
-  
-  // Add some realistic variation
-  const variation = Math.random() * 10 - 5; // ±5%
-  confidence = Math.max(70, Math.min(95, Math.round(confidence + variation)));
+//   for (const [diagnosis, weight] of Object.entries(weights)) {
+//     cumulative += weight;
+//     if (random <= cumulative) {
+//       selectedDiagnosis = diagnosis as keyof typeof diagnosisInfo;
+//       break;
+//     }
+//   }
 
-  return {
-    diagnosis: selectedDiagnosis,
-    confidence,
-    findings: diagInfo.findings,
-    recommendations: diagInfo.recommendations,
-    urgency: diagInfo.urgency,
-    nextSteps: diagInfo.nextSteps,
-    diagnosisName: diagInfo.name,
-    description: diagInfo.description
-  };
-}
+//   const diagInfo = diagnosisInfo[selectedDiagnosis];
+
+//   // Calculate confidence based on diagnosis type and image availability
+//   let confidence = 75;
+
+//   // Adjust confidence based on diagnosis complexity
+//   if (selectedDiagnosis === 'mel') confidence = 85; // High confidence for melanoma detection
+//   if (selectedDiagnosis === 'nv') confidence = 90;  // High confidence for common nevi
+//   if (selectedDiagnosis === 'bkl') confidence = 88; // High confidence for seborrheic keratosis
+//   if (selectedDiagnosis === 'bcc') confidence = 82; // Good confidence for BCC
+//   if (selectedDiagnosis === 'akiec') confidence = 78; // Moderate confidence for precancerous
+//   if (selectedDiagnosis === 'vasc') confidence = 85; // Good confidence for vascular
+//   if (selectedDiagnosis === 'df') confidence = 87;  // Good confidence for dermatofibroma
+
+//   // Boost confidence if image is provided
+//   if (userData.image) {
+//     confidence += 8;
+//   }
+
+//   // Add some realistic variation
+//   const variation = Math.random() * 10 - 5; // ±5%
+//   confidence = Math.max(70, Math.min(95, Math.round(confidence + variation)));
+
+//   return {
+//     diagnosis: selectedDiagnosis,
+//     confidence,
+//     findings: diagInfo.findings,
+//     recommendations: diagInfo.recommendations,
+//     urgency: diagInfo.urgency,
+//     nextSteps: diagInfo.nextSteps,
+//     diagnosisName: diagInfo.name,
+//     description: diagInfo.description
+//   };
+// }
